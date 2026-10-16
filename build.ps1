@@ -1,4 +1,4 @@
-# Antigravity No-TUN Launcher 一键编译与打包脚本
+﻿# Antigravity No-TUN Launcher 一键编译与打包脚本
 param(
     [string]$Mode = "all" # "dotnet", "csc", or "all"
 )

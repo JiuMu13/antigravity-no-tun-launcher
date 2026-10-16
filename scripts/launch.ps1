@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Antigravity No-TUN 启动与守护脚本 (PowerShell 版)
 .DESCRIPTION

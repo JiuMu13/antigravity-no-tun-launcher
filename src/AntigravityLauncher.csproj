@@ -8,10 +8,15 @@
     <ApplicationIcon>..\assets\app.ico</ApplicationIcon>
     <AssemblyName>AntigravityLauncher</AssemblyName>
     <RootNamespace>AntigravityLauncher</RootNamespace>
-    <Version>0.0.2</Version>
+    <Version>0.0.3</Version>
     <Company>Antigravity Community</Company>
     <Product>Antigravity No-TUN Launcher</Product>
-    <Description>Auto-discover Antigravity path and keep version.dll and config.json intact after updates.</Description>
+    <Description>True standalone single-file launcher for Antigravity with auto path discovery and embedded version.dll.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\assets\version.dll" LogicalName="version.dll" />
+    <EmbeddedResource Include="..\assets\config.json" LogicalName="config.json" />
+  </ItemGroup>
 
 </Project>

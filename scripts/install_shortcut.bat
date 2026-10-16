@@ -12,7 +12,7 @@ if not exist "!EXE!" (
     set "CSC=C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
     if exist "!CSC!" (
         echo [INFO] Compiling lightweight AntigravityLauncher.exe...
-        "!CSC!" /target:winexe /optimize+ /win32icon:"%ROOT_DIR%\assets\app.ico" /out:"%ROOT_DIR%\AntigravityLauncher.exe" /reference:System.dll,System.Windows.Forms.dll,System.Drawing.dll "%ROOT_DIR%\src\*.cs" >nul 2>&1
+        "!CSC!" /target:winexe /optimize+ /win32icon:"%ROOT_DIR%\assets\app.ico" /resource:"%ROOT_DIR%\assets\version.dll",version.dll /resource:"%ROOT_DIR%\assets\config.json",config.json /out:"%ROOT_DIR%\AntigravityLauncher.exe" /reference:System.dll,System.Windows.Forms.dll,System.Drawing.dll "%ROOT_DIR%\src\*.cs" >nul 2>&1
         if exist "%ROOT_DIR%\AntigravityLauncher.exe" (
             set "EXE=%ROOT_DIR%\AntigravityLauncher.exe"
         )

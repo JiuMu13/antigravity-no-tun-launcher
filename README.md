@@ -70,14 +70,20 @@ antigravity-no-tun-launcher/
 
 ## 🚀 快速上手
 
-### 方式一：直接下载使用（推荐）
+### 方式一：真·单文件绿色版（最推荐，免解压）
 
-1. 前往 GitHub [Releases](../../releases) 页面下载最新压缩包 `Antigravity-No-TUN-Launcher.zip`。
-2. 解压到任意固定目录（例如 `D:\Tools\AntigravityLauncher`）。
-3. 如需修改默认代理端口：打开 `assets/config.json`，将 `proxy.port` 修改为你本地客户端的实际端口（默认为 `7897`，如 Clash Verge / Mihomo 常为 7897，v2rayN 常为 10808）。
-4. 双击运行 `install_shortcut.bat`，即可在桌面生成专用快捷方式。后续只需点击该桌面图标启动 Antigravity 即可。
+1. 前往 GitHub [Releases](../../releases) 页面**仅需直接下载单个 `AntigravityLauncher.exe` 文件**。
+2. 将其放置在任意你喜欢的位置（如 `D:\Tools\` 或程序目录）。
+3. **直接双击运行**即可自动定位 Antigravity 并在缺失时自动补齐配置文件！
+4. **生成桌面快捷方式**：只需在终端或运行窗口执行一次 `AntigravityLauncher.exe --install-shortcut`，即可在桌面与开始菜单自动生成官方图标的专用快捷方式。
 
-### 方式二：命令行参数
+### 方式二：下载完整压缩包（适合需要预设自定义配置的用户）
+
+1. 前往 GitHub [Releases](../../releases) 下载 `Antigravity-No-TUN-Launcher.zip` 并解压。
+2. 如需修改默认代理端口：打开 `assets/config.json`，将 `proxy.port` 修改为你本地客户端的实际端口（默认为 `7897`，如 Clash Verge / Mihomo 常为 7897，v2rayN 常为 10808）。
+3. 双击运行 `install_shortcut.bat` 即可一键生成桌面专用快捷方式。
+
+### 方式三：命令行参数
 
 启动器支持以下命令行参数：
 

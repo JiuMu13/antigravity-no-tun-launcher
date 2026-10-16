@@ -27,10 +27,15 @@ if ($Mode -eq "csc" -or $Mode -eq "all") {
         $outExe = Join-Path $distDir "AntigravityLauncher.exe"
         $ico = Join-Path $assetsDir "app.ico"
         
+        $dllRes = Join-Path $assetsDir "version.dll"
+        $cfgRes = Join-Path $assetsDir "config.json"
+
         $args = @(
             "/target:winexe",
             "/optimize+",
             "/win32icon:`"$ico`"",
+            "/resource:`"$dllRes`",version.dll",
+            "/resource:`"$cfgRes`",config.json",
             "/out:`"$outExe`"",
             "/reference:System.dll",
             "/reference:System.Windows.Forms.dll",

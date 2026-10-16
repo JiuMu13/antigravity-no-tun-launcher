@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Reflection;
 
 namespace AntigravityLauncher
 {
@@ -32,6 +33,14 @@ namespace AntigravityLauncher
                         File.Copy(sourceDll, targetDll, true);
                         result.DllRestored = true;
                     }
+                    else
+                    {
+                        // 外部无文件时，从 exe 内部嵌入资源释放
+                        if (ExtractEmbeddedResource("version.dll", targetDll))
+                        {
+                            result.DllRestored = true;
+                        }
+                    }
                 }
 
                 // 2. 检查并补齐 config.json，或在有修改时同步备份
@@ -42,10 +51,18 @@ namespace AntigravityLauncher
                         File.Copy(sourceCfg, targetCfg, true);
                         result.ConfigRestored = true;
                     }
+                    else
+                    {
+                        // 外部无文件时，从 exe 内部嵌入资源释放
+                        if (ExtractEmbeddedResource("config.json", targetCfg))
+                        {
+                            result.ConfigRestored = true;
+                        }
+                    }
                 }
                 else if (!string.IsNullOrEmpty(sourceCfg) && File.Exists(sourceCfg))
                 {
-                    // 如果目标配置已被修改且更新，则自动回写同步，保护用户自定义端口或规则
+                    // 如果外部存在配置文件，且目标配置已被修改且更新，则自动回写同步，保护用户自定义端口或规则
                     DateTime targetTime = File.GetLastWriteTimeUtc(targetCfg);
                     DateTime sourceTime = File.GetLastWriteTimeUtc(sourceCfg);
                     if (targetTime > sourceTime)
@@ -65,6 +82,45 @@ namespace AntigravityLauncher
             }
 
             return result;
+        }
+
+        public static bool ExtractEmbeddedResource(string resourceLogicalName, string outputPath)
+        {
+            try
+            {
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                string targetRes = null;
+                foreach (string name in assembly.GetManifestResourceNames())
+                {
+                    if (name.Equals(resourceLogicalName, StringComparison.OrdinalIgnoreCase) ||
+                        name.EndsWith("." + resourceLogicalName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        targetRes = name;
+                        break;
+                    }
+                }
+
+                if (targetRes == null) return false;
+
+                using (Stream stream = assembly.GetManifestResourceStream(targetRes))
+                {
+                    if (stream == null) return false;
+                    using (FileStream fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
+                    {
+                        byte[] buffer = new byte[81920];
+                        int read;
+                        while ((read = stream.Read(buffer, 0, buffer.Length)) > 0)
+                        {
+                            fs.Write(buffer, 0, read);
+                        }
+                    }
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private static string ResolveAssetPath(string fileName)

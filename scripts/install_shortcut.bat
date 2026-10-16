@@ -1,9 +1,30 @@
 @echo off
-chcp 65001 >nul
-setlocal
+setlocal enabledelayedexpansion
 
-echo 正在创建 Antigravity (No-TUN) 桌面快捷方式...
+set "ROOT_DIR=%~dp0.."
+set "EXE=%ROOT_DIR%\AntigravityLauncher.exe"
 
-powershell -NoProfile -ExecutionPolicy Bypass -Command "& '%~dp0launch.ps1' -InstallShortcut"
+if exist "%ROOT_DIR%\dist\AntigravityLauncher.exe" (
+    set "EXE=%ROOT_DIR%\dist\AntigravityLauncher.exe"
+)
 
-pause
+if not exist "!EXE!" (
+    set "CSC=C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
+    if exist "!CSC!" (
+        echo [INFO] Compiling lightweight AntigravityLauncher.exe...
+        "!CSC!" /target:winexe /optimize+ /win32icon:"%ROOT_DIR%\assets\app.ico" /out:"%ROOT_DIR%\AntigravityLauncher.exe" /reference:System.dll,System.Windows.Forms.dll,System.Drawing.dll "%ROOT_DIR%\src\*.cs" >nul 2>&1
+        if exist "%ROOT_DIR%\AntigravityLauncher.exe" (
+            set "EXE=%ROOT_DIR%\AntigravityLauncher.exe"
+        )
+    )
+)
+
+if exist "!EXE!" (
+    echo [INFO] Creating desktop shortcut...
+    "!EXE!" --install-shortcut
+    echo [OK] Done!
+    exit /b 0
+)
+
+echo [INFO] Falling back to PowerShell...
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0launch.ps1" -InstallShortcut

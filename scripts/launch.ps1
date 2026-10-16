@@ -166,4 +166,9 @@ if ($InstallShortcut) {
 # 启动 Antigravity
 $exe = Join-Path $targetDir "Antigravity.exe"
 Write-Host "正在启动 Antigravity..." -ForegroundColor Green
-Start-Process -FilePath $exe -WorkingDirectory $targetDir -ArgumentList $args
+if ($args -and $args.Count -gt 0) {
+    Start-Process -FilePath $exe -WorkingDirectory $targetDir -ArgumentList $args
+} else {
+    Start-Process -FilePath $exe -WorkingDirectory $targetDir
+}
+
